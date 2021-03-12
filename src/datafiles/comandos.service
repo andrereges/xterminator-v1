@@ -1,0 +1,13 @@
+[Unit]
+Description=Servidor PHP URLs: xterminator.local:28000 & xterminator-api.local:28001
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/var/www/html/comandos/src/datafiles/server.sh
+RemainAfterExit=yes
+KillSignal=SIGINT 
+
+[Install]
+WantedBy=multi-user.target

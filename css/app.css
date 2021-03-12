@@ -1,0 +1,16 @@
+body {
+    background-image: url("../images/windows_xp.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-color: #cccccc;
+    
+}
+#frame {
+    background-color: #ffffff;
+}
+h1 {
+    font-weight: bold;
+}
+#tituloXterminator {
+    text-shadow: -1px 0 black, 0 1px red, 1px 0 black, 0 -1px black;
+}

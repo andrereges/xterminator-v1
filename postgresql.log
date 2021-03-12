@@ -1,0 +1,245 @@
+
+2019-11-25 18:34:55.191 UTC [1411] LOG:  statement: SELECT 
+	    cod_acao ,
+	    cod_funcionalidade ,
+	    nom_acao ,
+	    nom_arquivo ,
+	    complemento_acao ,
+	    parametro ,
+	    ordem 
+	FROM 
+	    administracao.acao WHERE cod_acao = 1604 
+2019-11-25 18:34:55.192 UTC [1411] LOG:  duration: 0.661 ms
+2019-11-25 18:34:55.194 UTC [1412] LOG:  statement: SELECT 
+	    cod_gestao ,
+	    nom_gestao ,
+	    nom_diretorio ,
+	    ordem ,
+	    versao 
+	FROM 
+	    ADMINISTRACAO.GESTAO ORDER BY ordem 
+2019-11-25 18:34:55.195 UTC [1412] LOG:  duration: 0.847 ms
+2019-11-25 18:34:55.197 UTC [1413] LOG:  statement: select parametro,valor from administracao.configuracao WHERE parametro = 'mensagem' and exercicio = '2019'
+2019-11-25 18:34:55.198 UTC [1413] LOG:  duration: 0.919 ms
+2019-11-25 18:34:55.200 UTC [1414] LOG:  statement:  SELECT                                                    A.cod_acao,                                           A.nom_acao,                                           A.nom_arquivo,                                        A.parametro,                                          A.ordem,                                              F.cod_funcionalidade,                                 F.nom_funcionalidade,                                 F.nom_diretorio,                                      F.ordem,                                              M.cod_modulo,                                         M.cod_responsavel,                                    M.nom_modulo,                                         M.nom_diretorio,                                      M.ordem,                                              G.nom_gestao,                                         U.numcgm,                                             U.cod_orgao,                                          U.dt_cadastro,                                        U.username,                                           U.password,                                           U.status                                          FROM                                                      administracao.acao             A,                               administracao.funcionalidade   F,                               administracao.modulo           M,                               administracao.gestao           G,                               administracao.usuario          U                            WHERE                                                     A.cod_funcionalidade = F.cod_funcionalidade  AND      F.cod_modulo         = M.cod_modulo          AND      G.cod_gestao         = M.cod_gestao          AND      M.cod_responsavel    = U.numcgm                   and cod_acao = 1604
+2019-11-25 18:34:55.202 UTC [1414] LOG:  duration: 2.062 ms
+2019-11-25 18:34:55.205 UTC [1415] LOG:  statement: select arquivo from administracao.relatorio  where cod_gestao=3 and cod_modulo=35and cod_relatorio=4
+2019-11-25 18:34:55.206 UTC [1415] LOG:  duration: 0.578 ms
+2019-11-25 18:34:55.208 UTC [1416] LOG:  statement: select nom_diretorio from administracao.gestao where cod_gestao=3
+2019-11-25 18:34:55.208 UTC [1416] LOG:  duration: 0.487 ms
+2019-11-25 18:34:55.210 UTC [1417] LOG:  statement: select nom_diretorio from administracao.modulo where cod_modulo=35
+2019-11-25 18:34:55.211 UTC [1417] LOG:  duration: 0.642 ms
+2019-11-25 18:34:55.692 UTC [1418] LOG:  duration: 0.094 ms  parse <unnamed>: SET extra_float_digits = 3
+2019-11-25 18:34:55.692 UTC [1418] LOG:  duration: 0.005 ms  bind <unnamed>: SET extra_float_digits = 3
+2019-11-25 18:34:55.692 UTC [1418] LOG:  execute <unnamed>: SET extra_float_digits = 3
+2019-11-25 18:34:55.692 UTC [1418] LOG:  duration: 0.012 ms
+2019-11-25 18:34:55.692 UTC [1418] LOG:  duration: 0.013 ms  parse <unnamed>: SET application_name = 'PostgreSQL JDBC Driver'
+2019-11-25 18:34:55.692 UTC [1418] LOG:  duration: 0.005 ms  bind <unnamed>: SET application_name = 'PostgreSQL JDBC Driver'
+2019-11-25 18:34:55.692 UTC [1418] LOG:  execute <unnamed>: SET application_name = 'PostgreSQL JDBC Driver'
+2019-11-25 18:34:55.692 UTC [1418] LOG:  duration: 0.016 ms
+2019-11-25 18:34:55.695 UTC [1418] LOG:  duration: 0.914 ms  parse <unnamed>:     SELECT prefeitura.nom_prefeitura
+	         , COALESCE(email.email,'') AS email
+	         , logotipo.logotipo
+	         , cep.cep
+	         , cnpj.cnpj
+	         , fone.fone || '/' || fax.fax AS fone
+	         , logradouro.logradouro || ', ' || numero.numero || ' - ' || complemento.complemento AS endereco
+	      FROM (    SELECT valor AS nom_prefeitura
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'nom_prefeitura'
+	           ) AS prefeitura
+	 LEFT JOIN (    SELECT valor AS email
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'e-mail'
+	           ) AS email
+	        ON email.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT '../../../../../../gestaoAdministrativa/fontes/PHP/framework/temas/padrao/imagens/' || valor AS logotipo
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'logotipo'
+	           ) AS logotipo
+	        ON logotipo.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS cep
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'cep'
+	           ) AS cep
+	        ON cep.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT substr(valor,1,2)||'.'||substr(valor,3,3)||'.'||substr(valor,6,3)||'/'||substr(valor,9,4)||'-'||substr(valor,13,2) as cnpj
+	                     , exercicio
+	                  FROM administracao.configuracao 
+	                 WHERE parametro = 'cnpj'
+	           ) as cnpj
+	        ON cnpj.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS fone
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'fone'
+	           ) AS fone
+	        ON fone.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS fax
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'fax'
+	           ) AS fax
+	        ON fax.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS logradouro
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'logradouro'
+	           ) AS logradouro
+	        ON logradouro.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS numero
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'numero'
+	           ) AS numero
+	        ON numero.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS complemento
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'complemento'
+	           ) AS complemento
+	        ON complemento.exercicio = prefeitura.exercicio
+	   WHERE prefeitura.exercicio = $1
+2019-11-25 18:34:55.696 UTC [1418] LOG:  duration: 0.496 ms  parse <unnamed>: SELECT c.oid, a.attnum, a.attname, c.relname, n.nspname, a.attnotnull OR (t.typtype = 'd' AND t.typnotnull), a.attidentity != '' OR pg_catalog.pg_get_expr(d.adbin, d.adrelid) LIKE '%nextval(%' FROM pg_catalog.pg_class c JOIN pg_catalog.pg_namespace n ON (c.relnamespace = n.oid) JOIN pg_catalog.pg_attribute a ON (c.oid = a.attrelid) JOIN pg_catalog.pg_type t ON (a.atttypid = t.oid) LEFT JOIN pg_catalog.pg_attrdef d ON (d.adrelid = a.attrelid AND d.adnum = a.attnum) JOIN (SELECT 13949320 AS oid , 4 AS attnum UNION ALL SELECT 13949320, 4) vals ON (c.oid = vals.oid AND a.attnum = vals.attnum) 
+2019-11-25 18:34:55.698 UTC [1418] LOG:  duration: 1.857 ms  bind <unnamed>: SELECT c.oid, a.attnum, a.attname, c.relname, n.nspname, a.attnotnull OR (t.typtype = 'd' AND t.typnotnull), a.attidentity != '' OR pg_catalog.pg_get_expr(d.adbin, d.adrelid) LIKE '%nextval(%' FROM pg_catalog.pg_class c JOIN pg_catalog.pg_namespace n ON (c.relnamespace = n.oid) JOIN pg_catalog.pg_attribute a ON (c.oid = a.attrelid) JOIN pg_catalog.pg_type t ON (a.atttypid = t.oid) LEFT JOIN pg_catalog.pg_attrdef d ON (d.adrelid = a.attrelid AND d.adnum = a.attnum) JOIN (SELECT 13949320 AS oid , 4 AS attnum UNION ALL SELECT 13949320, 4) vals ON (c.oid = vals.oid AND a.attnum = vals.attnum) 
+2019-11-25 18:34:55.698 UTC [1418] LOG:  execute <unnamed>: SELECT c.oid, a.attnum, a.attname, c.relname, n.nspname, a.attnotnull OR (t.typtype = 'd' AND t.typnotnull), a.attidentity != '' OR pg_catalog.pg_get_expr(d.adbin, d.adrelid) LIKE '%nextval(%' FROM pg_catalog.pg_class c JOIN pg_catalog.pg_namespace n ON (c.relnamespace = n.oid) JOIN pg_catalog.pg_attribute a ON (c.oid = a.attrelid) JOIN pg_catalog.pg_type t ON (a.atttypid = t.oid) LEFT JOIN pg_catalog.pg_attrdef d ON (d.adrelid = a.attrelid AND d.adnum = a.attnum) JOIN (SELECT 13949320 AS oid , 4 AS attnum UNION ALL SELECT 13949320, 4) vals ON (c.oid = vals.oid AND a.attnum = vals.attnum) 
+2019-11-25 18:34:55.698 UTC [1418] LOG:  duration: 0.058 ms
+2019-11-25 18:34:55.700 UTC [1418] LOG:  duration: 0.254 ms  parse <unnamed>:     SELECT prefeitura.nom_prefeitura
+	         , COALESCE(email.email,'') AS email
+	         , logotipo.logotipo
+	         , cep.cep
+	         , cnpj.cnpj
+	         , fone.fone || '/' || fax.fax AS fone
+	         , logradouro.logradouro || ', ' || numero.numero || ' - ' || complemento.complemento AS endereco
+	      FROM (    SELECT valor AS nom_prefeitura
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'nom_prefeitura'
+	           ) AS prefeitura
+	 LEFT JOIN (    SELECT valor AS email
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'e-mail'
+	           ) AS email
+	        ON email.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT '../../../../../../gestaoAdministrativa/fontes/PHP/framework/temas/padrao/imagens/' || valor AS logotipo
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'logotipo'
+	           ) AS logotipo
+	        ON logotipo.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS cep
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'cep'
+	           ) AS cep
+	        ON cep.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT substr(valor,1,2)||'.'||substr(valor,3,3)||'.'||substr(valor,6,3)||'/'||substr(valor,9,4)||'-'||substr(valor,13,2) as cnpj
+	                     , exercicio
+	                  FROM administracao.configuracao 
+	                 WHERE parametro = 'cnpj'
+	           ) as cnpj
+	        ON cnpj.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS fone
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'fone'
+	           ) AS fone
+	        ON fone.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS fax
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'fax'
+	           ) AS fax
+	        ON fax.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS logradouro
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'logradouro'
+	           ) AS logradouro
+	        ON logradouro.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS numero
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'numero'
+	           ) AS numero
+	        ON numero.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS complemento
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'complemento'
+	           ) AS complemento
+	        ON complemento.exercicio = prefeitura.exercicio
+	   WHERE prefeitura.exercicio = $1
+2019-11-25 18:34:55.702 UTC [1418] LOG:  duration: 2.025 ms  bind <unnamed>:     SELECT prefeitura.nom_prefeitura
+	         , COALESCE(email.email,'') AS email
+	         , logotipo.logotipo
+	         , cep.cep
+	         , cnpj.cnpj
+	         , fone.fone || '/' || fax.fax AS fone
+	         , logradouro.logradouro || ', ' || numero.numero || ' - ' || complemento.complemento AS endereco
+	      FROM (    SELECT valor AS nom_prefeitura
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'nom_prefeitura'
+	           ) AS prefeitura
+	 LEFT JOIN (    SELECT valor AS email
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'e-mail'
+	           ) AS email
+	        ON email.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT '../../../../../../gestaoAdministrativa/fontes/PHP/framework/temas/padrao/imagens/' || valor AS logotipo
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'logotipo'
+	           ) AS logotipo
+	        ON logotipo.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS cep
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'cep'
+	           ) AS cep
+	        ON cep.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT substr(valor,1,2)||'.'||substr(valor,3,3)||'.'||substr(valor,6,3)||'/'||substr(valor,9,4)||'-'||substr(valor,13,2) as cnpj
+	                     , exercicio
+	                  FROM administracao.configuracao 
+	                 WHERE parametro = 'cnpj'
+	           ) as cnpj
+	        ON cnpj.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS fone
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'fone'
+	           ) AS fone
+	        ON fone.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS fax
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'fax'
+	           ) AS fax
+	        ON fax.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS logradouro
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'logradouro'
+	           ) AS logradouro
+	        ON logradouro.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS numero
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'numero'
+	           ) AS numero
+	        ON numero.exercicio = prefeitura.exercicio
+	 LEFT JOIN (    SELECT valor AS complemento
+	                     , exercicio
+	                  FROM administracao.configuracao
+	                 WHERE parametro = 'complemento'
+	           ) AS complemento
+	        ON complemento.exercicio = prefeitura.exercicio
+	   WHERE prefeitura.exercicio = $1
+2019-11-25 18:34:55.702 UTC [1418] DETAIL:  parameters: $1 = '2019'

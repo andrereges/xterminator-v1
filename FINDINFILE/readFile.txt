@@ -1,0 +1,11 @@
+        $arquivo = fopen ('/var/www/html/grp3/src/Urbem/AdministrativoBundle/Resources/config/Sonata/Normas/TipoNormaAdmin.php', 'r');
+
+        while(!feof($arquivo))
+        {
+            $linha = fgets($arquivo, 1024);
+            echo strlen($linha). ' - '.$linha.'<br />';
+        }
+        
+        fclose($arquivo);
+
+        die;
